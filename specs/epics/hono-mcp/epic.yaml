@@ -1,0 +1,30 @@
+# The epic's declaration. metadata.name equals the directory name; metadata.key
+# is the task-key prefix this epic reserves (HM → HM-1, HM-2, …). Owner, target
+# date and health are the platform's — never written here.
+apiVersion: orun.io/v1
+kind: Epic
+metadata:
+  name: hono-mcp
+  key: HM
+spec:
+  title: "Vercel's Hono MCP remote server on Cloudflare Workers"
+  summary: "Vercel's Hono MCP remote server example — a Model Context Protocol server with four math tools (add, subtract, multiply, divide), served statelessly over Streamable HTTP at /mcp by one Hono app through mcp-handler and the MCP SDK — runs as one plain Cloudflare Worker, inside the Cirrus baseline's repository conventions, and becomes an Orun baseline that takes a new MCP server from nothing to live on stage and prod in one landing."
+  state: started
+  milestones:
+    - name: "HM0 — the spec"
+      exitCriteria:
+        - "the repository is born with its intent, CI, tooling and spec index, and this doc set and the task contracts are on main"
+      tasks: [HM-1]
+    - name: "HM1 — the MCP server on Workers"
+      exitCriteria:
+        - "apps/api is the upstream src/index.ts, bundled by wrangler as a plain Worker, its handler built on the first request"
+        - "`pnpm typecheck`, `pnpm lint`, `pnpm test` and `pnpm build` are green, the tests driving initialize, tools/list and every tools/call in-process"
+        - "`wrangler dev` serves /mcp to the MCP SDK's own client: initialize with no session, tools/list, every tools/call"
+        - "the README says how to run, test, connect a client and deploy it, and how every Vercel piece maps to Cloudflare"
+      tasks: [HM-2]
+    - name: "HM2 — a baseline"
+      exitCriteria:
+        - "blueprint.yaml (the console card) and repo-blueprint.yaml (the build) take a new MCP server from nothing to live on stage and prod in one landing, then record it"
+        - "a server built from it carries the server only, renamed throughout to its own name, repository and Worker, with the example's licence intact"
+        - "Baseline CI is green: contract tests, generated component docs, the blueprint read by the pinned orun, the leak gate, the offline bootstrap and the end-to-end tier — the stage lane's steps in a staged job tree, the Worker smoke-tested and called by an MCP client"
+      tasks: [HM-3]

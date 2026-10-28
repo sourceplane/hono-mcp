@@ -7,5 +7,6 @@ folder is the adoption; the merge creates the epic in the workspace.
 
 | Epic | Cluster | Status | What it is |
 |------|---------|--------|------------|
+| [`hono-mcp/`](./hono-mcp/) | **HM** | In progress (HM0) | Vercel's Hono MCP remote server example — four math tools over Streamable HTTP at `/mcp` — as one stateless Cloudflare Worker, and an Orun baseline that instantiates it in one landing (HM2) |
 
 As-built ≠ intent: what shipped lives in each epic's `IMPLEMENTATION-STATUS.md`.

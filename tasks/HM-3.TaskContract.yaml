@@ -1,0 +1,29 @@
+apiVersion: orun.io/v1
+kind: TaskContract
+metadata:
+  name: HM-3
+  title: "hono-mcp becomes an Orun baseline"
+spec:
+  goal: blueprint.yaml and repo-blueprint.yaml take a new MCP server from nothing to live on stage and prod in one landing, held by Baseline CI
+  affects:
+    - blueprint.yaml
+    - repo-blueprint.yaml
+    - BOOTSTRAP.md
+    - .baseline
+    - .github/workflows/baseline.yml
+    - .github/workflows/tag.yml
+    - ai/context
+    - docs/phases
+    - hooks
+    - testing
+    - tooling/rebrand
+    - tooling/bootstrap
+    - tooling/catalog
+    - apps/api/docs
+    - tests/api/docs
+    - specs/epics/hono-mcp
+    - README.md
+  doneWhen:
+    - every Baseline CI tier is green
+    - a server placed from it carries the server only, branded, with the example's licence intact
+  gates: []
