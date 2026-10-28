@@ -1,0 +1,17 @@
+apiVersion: orun.io/v1
+kind: TaskContract
+metadata:
+  name: HM-2
+  title: "The MCP server on Workers"
+spec:
+  goal: Vercel's Hono MCP remote server runs as one stateless Cloudflare Worker — four math tools over Streamable HTTP at /mcp — with its tests, and its README saying how it maps to Vercel
+  affects:
+    - apps/api
+    - tests/api
+    - pnpm-lock.yaml
+    - pnpm-workspace.yaml
+    - README.md
+  doneWhen:
+    - pnpm typecheck, lint, test and build are green
+    - wrangler dev answers an MCP client at /mcp — initialize, tools/list, every tools/call — and /health
+  gates: []
