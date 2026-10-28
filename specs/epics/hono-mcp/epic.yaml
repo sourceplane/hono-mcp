@@ -9,7 +9,7 @@ metadata:
 spec:
   title: "Vercel's Hono MCP remote server on Cloudflare Workers"
   summary: "Vercel's Hono MCP remote server example — a Model Context Protocol server with four math tools (add, subtract, multiply, divide), served statelessly over Streamable HTTP at /mcp by one Hono app through mcp-handler and the MCP SDK — runs as one plain Cloudflare Worker, inside the Cirrus baseline's repository conventions, and becomes an Orun baseline that takes a new MCP server from nothing to live on stage and prod in one landing."
-  state: started
+  state: completed
   milestones:
     - name: "HM0 — the spec"
       exitCriteria:

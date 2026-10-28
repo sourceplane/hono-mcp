@@ -4,9 +4,9 @@ Vercel's [Hono MCP remote server](https://github.com/vercel/examples/tree/main/s
 example — a Model Context Protocol server with four math tools (add,
 subtract, multiply, divide), served over Streamable HTTP at `/mcp` by one
 `Hono` app through `mcp-handler` — running natively as a **Cloudflare
-Worker**, deployed by
-[Orun](https://github.com/sourceplane/orun) to stage and prod on every merge.
-Packaging it as an Orun baseline is the next milestone (HM2).
+Worker**, and packaged as an **Orun baseline**: one command takes a new MCP
+server from nothing to live on stage and prod, in its own repository, under
+its own name — in ONE landing.
 
 Hono's `fetch` handler is the Worker's: no adapter and no framework build,
 wrangler bundles `src/index.ts` and Cloudflare runs it. The server is
@@ -16,9 +16,47 @@ code; one line moved: the handler is built on the first request instead of
 at module load, because `mcp-handler` starts a timer when it is created and
 Workers refuse a timer in global scope. The port adds the Worker's config,
 the monorepo wrapper, a test package, the deploy contract and a `/health`
-route the deploy smoke-tests before it makes an MCP call.
+route the deploy smoke-tests before it makes an MCP call. What the baseline
+adds is everything needed to make a copy of it somebody else's — built the
+way [cirrus-baseline](https://github.com/sourceplane/cirrus-baseline) is.
 See [`specs/epics/hono-mcp`](specs/epics/hono-mcp/README.md) for the design,
 the milestones and the as-built status.
+
+## Instantiating a product
+
+```bash
+git clone --depth 1 --branch <baseline-tag> https://github.com/sourceplane/hono-mcp
+cd hono-mcp
+orun new --blueprint repo-blueprint.yaml --out ~/mcp/acme-mcp --run-hooks --resume \
+  --set reponame=acme-mcp --set productname="Acme MCP" \
+  --set githuborg=acme-inc --set subdomain=<workers-dev-subdomain>
+```
+
+Or, once the platform's registry lists it, from the Orun console (Baselines →
+`hono-mcp` → Build). Two phases — `01-product` (the repository, its CI and
+the whole server in one pull request, deployed to stage and prod by one
+convergence, smoke-tested) and `02-docs` (the live deployment recorded) —
+each landing one pull request in the new repository.
+**[BOOTSTRAP.md](BOOTSTRAP.md)** is the operator guide;
+[docs/phases/](docs/phases/README.md) has a page per phase.
+
+The new repository receives the **server only** — the Worker, its tests, its
+CI, its tooling, a README of its own, its operating contract and the
+example's licence — renamed throughout to the server's name, repository and
+Cloudflare Worker. None of this
+repository's machinery ships, and nothing that ships names it.
+
+| What makes it a baseline | Where |
+|---|---|
+| The console card (inputs, secrets, programme) | `blueprint.yaml` |
+| The build document (modules, phases, hooks) | `repo-blueprint.yaml` |
+| This tree's identity, and the bootstrap's task contracts | `.baseline/` |
+| The rename engine | `tooling/rebrand/rebrand.mjs` |
+| The bootstrap's helpers (deferrals, redeploy marker, work-tree strip) | `tooling/bootstrap/` |
+| The deployment-record renderer | `hooks/render-deployment-docs.sh` |
+| The server's README and context pack | `.baseline/product/README.md`, `ai/context/` |
+| The baseline's tests: contract, leak, offline bootstrap, end to end | `testing/`, `.github/workflows/baseline.yml` |
+| Cutting a `baseline-vN` tag | `.github/workflows/tag.yml` |
 
 ## What is here (the product)
 
@@ -74,6 +112,8 @@ connects to `http://localhost:8787/mcp` (the MCP Inspector:
 | Workflow | What it runs | Ships to a server |
 |---|---|---|
 | `ci.yml` | the Orun pipeline, and the only workflow a server carries: `orun plan --changed`, then one job per lane. A pull request runs the verify lanes (the Worker built, type-checked and dry-deployed per environment; the tests' `quick-check` lane installs and checks the package, it does not run them), except the bootstrap's own landings (`orun/BASE-*`), where `plan` alone is the check; a merge deploys stage → prod. It plans nothing while `intent.yaml` names the placeholder workspace `ws_CHANGE_ME`, as this repository does. A manual run (Orunbase's Deploy button, or Run workflow on `main`) plans the environment and components it names under the push-to-main trigger, so they deploy as a merge deploys them | yes |
+| `baseline.yml` | the baseline's own tiers: contract tests, the blueprint read by the pinned orun, the leak gate, the offline bootstrap, the server built, dry-deployed, served and called by the MCP SDK's own client | no |
+| `tag.yml` | cuts a `baseline-vN` tag (manual) | no |
 
 ## Credits
 
