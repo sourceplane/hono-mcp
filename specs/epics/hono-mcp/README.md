@@ -8,7 +8,7 @@ baseline that makes a copy of it somebody else's server in one landing.**
 
 | | |
 |---|---|
-| Status | In progress — HM0 on main |
+| Status | In progress — HM1 on main: the site runs on Workers |
 | Upstream | [vercel/examples `starter/hono-mcp`](https://github.com/vercel/examples/tree/main/starter/hono-mcp) (MIT), at `de86723` (2026-10-16) |
 | Reference | [hono-api](https://github.com/sourceplane/hono-api) — the same plain Worker, scaffolding, tests and bootstrap |
 | Key | `HM` |
