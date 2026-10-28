@@ -4,7 +4,7 @@
 |---|---|---|
 | HM0 — the spec | ✅ | HM-1 |
 | HM1 — the MCP server on Workers | ✅ | HM-2 |
-| HM2 — a baseline | planned | HM-3 |
+| HM2 — a baseline | ✅ | HM-3, tagged `baseline-v1` |
 
 ## Departures from the upstream example
 
